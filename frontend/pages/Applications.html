@@ -5,15 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Applications – CampusHire AI</title>
   <link rel="stylesheet" href="../css/main.css" />
-  <link rel="stylesheet" href="../css/applications.css" />
+  <link rel="stylesheet" href="../css/Applications.css" />
 </head>
 <body>
   <nav class="navbar">
-    <a href="index.html" class="nav-brand">🎓 Campus<span>Hire</span> AI</a>
+    <a href="/pages/index.html" class="nav-brand">🎓 Campus<span>Hire</span> AI</a>
     <ul class="nav-links" id="navLinks">
-      <li><a href="dashboard.html">Dashboard</a></li>
-      <li><a href="applications.html" class="active">Applications</a></li>
-      <li><a href="ai-assistant.html">AI Assistant</a></li>
+      <li><a href="/pages/dashboard.html">Dashboard</a></li>
+      <li><a href="/pages/Applications.html" class="active">Applications</a></li>
+      <li><a href="/pages/ai-assistant.html">AI Assistant</a></li>
       <li>
         <span id="userNameDisplay" style="color:var(--text-muted); font-size:0.875rem; padding: 0 0.5rem;"></span>
         <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
@@ -27,10 +27,10 @@
       <!-- Sidebar -->
       <aside class="sidebar" id="sidebar">
         <div class="sidebar-label">Main</div>
-        <a href="dashboard.html"><span class="sidebar-icon">📊</span> Dashboard</a>
-        <a href="applications.html" class="active"><span class="sidebar-icon">📋</span> Applications</a>
+        <a href="/pages/dashboard.html"><span class="sidebar-icon">📊</span> Dashboard</a>
+        <a href="/pages/Applications.html" class="active"><span class="sidebar-icon">📋</span> Applications</a>
         <div class="sidebar-label">Tools</div>
-        <a href="ai-assistant.html"><span class="sidebar-icon">🤖</span> AI Assistant</a>
+        <a href="/pages/ai-assistant.html"><span class="sidebar-icon">🤖</span> AI Assistant</a>
         <div class="sidebar-label" style="margin-top:auto">Account</div>
         <a href="#" id="sidebarLogout"><span class="sidebar-icon">👋</span> Log out</a>
       </aside>
@@ -192,10 +192,12 @@
     </div>
   </div>
 
+  <!-- Back to top -->
+  <button id="backToTop" aria-label="Back to top">↑</button>
   <!-- Toast -->
   <div class="toast-container" id="toastContainer"></div>
 
   <script src="../js/utils.js"></script>
-  <script src="../js/applications.js"></script>
+  <script src="../js/Applications.js"></script>
 </body>
 </html>

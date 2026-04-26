@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 – Page Not Found | CampusHire AI</title>
+  <link rel="stylesheet" href="../css/main.css" />
+  <style>
+    .notfound-wrapper {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .notfound-wrapper::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(79,142,247,0.06) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .notfound-content {
+      position: relative;
+      z-index: 1;
+      max-width: 480px;
+      animation: fadeInUp 0.6s ease;
+    }
+    .notfound-code {
+      font-family: var(--font-display);
+      font-size: clamp(6rem, 20vw, 10rem);
+      font-weight: 800;
+      line-height: 1;
+      background: linear-gradient(135deg, var(--accent), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+    }
+    .notfound-emoji {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+    .notfound-content h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .notfound-content p {
+      margin-bottom: 2rem;
+      line-height: 1.7;
+    }
+    .notfound-actions {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand">🎓 Campus<span>Hire</span> AI</a>
+  </nav>
+
+  <div class="notfound-wrapper">
+    <div class="notfound-content">
+      <div class="notfound-code">404</div>
+      <span class="notfound-emoji">🔍</span>
+      <h2>This page went on a job hunt</h2>
+      <p>Looks like the page you're looking for doesn't exist — or maybe it got an offer elsewhere. Let's get you back on track.</p>
+      <div class="notfound-actions">
+        <a href="dashboard.html" class="btn btn-primary">Go to Dashboard</a>
+        <a href="index.html" class="btn btn-ghost">Back to Home</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

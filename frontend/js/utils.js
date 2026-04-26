@@ -1,218 +1,178 @@
 /* ============================================================
-   utils.js — Shared utilities used across all pages
-   - API calls (fetch wrapper)
-   - Auth token management (localStorage)
-   - Toast notifications
-   - Auth guard (redirect if not logged in)
+   utils.js — Shared utilities (Phase 7: final polish)
    ============================================================ */
 
-// Base URL for the backend API (change in production)
-const API_BASE = 'http://localhost:3000/api';
+const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  ? 'http://localhost:3000/api'
+  : '/api';
 
-/* ── Auth token helpers ─────────────────────────────────── */
+// ── Auth helpers ─────────────────────────────────────────────
+function saveToken(token)  { localStorage.setItem('ch_token', token); }
+function getToken()        { return localStorage.getItem('ch_token'); }
+function clearToken()      { localStorage.removeItem('ch_token'); localStorage.removeItem('ch_user'); }
+function saveUser(user)    { localStorage.setItem('ch_user', JSON.stringify(user)); }
+function getUser()         { try { return JSON.parse(localStorage.getItem('ch_user')); } catch { return null; } }
+function isLoggedIn()      { return !!getToken(); }
 
-/** Save JWT token after login/signup */
-function saveToken(token) {
-  localStorage.setItem('ch_token', token);
-}
-
-/** Get the stored JWT token */
-function getToken() {
-  return localStorage.getItem('ch_token');
-}
-
-/** Remove token on logout */
-function clearToken() {
-  localStorage.removeItem('ch_token');
-  localStorage.removeItem('ch_user');
-}
-
-/** Save user info to localStorage */
-function saveUser(user) {
-  localStorage.setItem('ch_user', JSON.stringify(user));
-}
-
-/** Get current user from localStorage */
-function getUser() {
-  try {
-    return JSON.parse(localStorage.getItem('ch_user'));
-  } catch {
-    return null;
-  }
-}
-
-/** Check if user is logged in */
-function isLoggedIn() {
-  return !!getToken();
-}
-
-/* ── Auth guard ─────────────────────────────────────────── */
-
-/**
- * Call this at the top of any protected page.
- * Redirects to login if not authenticated.
- */
 function requireAuth() {
-  if (!isLoggedIn()) {
-    window.location.href = 'login.html';
-    return false;
-  }
+  if (!isLoggedIn()) { window.location.href = 'login.html'; return false; }
   return true;
 }
-
-/**
- * Redirect logged-in users away from auth pages.
- * Call on login.html and signup.html.
- */
 function redirectIfLoggedIn() {
-  if (isLoggedIn()) {
-    window.location.href = 'dashboard.html';
-  }
+  if (isLoggedIn()) window.location.href = 'dashboard.html';
 }
 
-/* ── API fetch wrapper ──────────────────────────────────── */
-
-/**
- * Makes an authenticated API request.
- * Automatically adds Authorization header with JWT token.
- *
- * @param {string} endpoint - e.g. '/applications'
- * @param {object} options  - fetch options (method, body, etc.)
- * @returns {Promise<any>}  - parsed JSON response
- */
+// ── API fetch ────────────────────────────────────────────────
 async function apiRequest(endpoint, options = {}) {
   const token = getToken();
-
   const config = {
+    method: options.method || 'GET',
     headers: {
       'Content-Type': 'application/json',
-      ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
-      ...(options.headers || {})
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...(options.headers || {}),
     },
-    ...options
   };
+  if (options.body) config.body = typeof options.body === 'string' ? options.body : JSON.stringify(options.body);
 
-  // Convert body object to JSON string if needed
-  if (config.body && typeof config.body === 'object') {
-    config.body = JSON.stringify(config.body);
-  }
-
+  let response;
   try {
-    const response = await fetch(`${API_BASE}${endpoint}`, config);
-    const data = await response.json();
-
-    // If 401 Unauthorized, token is expired → logout
-    if (response.status === 401) {
-      clearToken();
-      window.location.href = 'login.html';
-      return;
-    }
-
-    if (!response.ok) {
-      throw new Error(data.message || 'Something went wrong');
-    }
-
-    return data;
-  } catch (error) {
-    throw error;
+    response = await fetch(`${API_BASE}${endpoint}`, config);
+  } catch {
+    throw new Error('Cannot reach the server. Make sure it is running on port 3000.');
   }
+
+  if (response.status === 401) { clearToken(); window.location.href = 'login.html'; return; }
+
+  let data;
+  try { data = await response.json(); } catch { throw new Error(`Server error (${response.status})`); }
+  if (!response.ok) throw new Error(data.message || `Request failed (${response.status})`);
+  return data;
 }
 
-/* ── Toast notifications ─────────────────────────────────── */
+// ── Auth actions ─────────────────────────────────────────────
+function logout() { clearToken(); window.location.href = 'index.html'; }
 
-/**
- * Show a toast notification
- * @param {string} message
- * @param {'success'|'error'|'info'} type
- * @param {number} duration - ms before auto-dismiss
- */
-function showToast(message, type = 'info', duration = 3500) {
-  const container = document.getElementById('toastContainer');
-  if (!container) return;
-
-  const toast = document.createElement('div');
-  toast.className = `toast ${type}`;
-  toast.textContent = message;
-
-  container.appendChild(toast);
-
-  // Auto-remove after duration
-  setTimeout(() => {
-    toast.style.animation = 'slideInToast 0.3s ease reverse';
-    setTimeout(() => toast.remove(), 300);
-  }, duration);
-}
-
-/* ── Logout ──────────────────────────────────────────────── */
-
-/** Log out and redirect to landing page */
-function logout() {
-  clearToken();
-  window.location.href = 'index.html';
-}
-
-/** Attach logout handler to elements with id="logoutBtn" or id="sidebarLogout" */
 function setupLogoutHandlers() {
-  const logoutBtn = document.getElementById('logoutBtn');
-  if (logoutBtn) logoutBtn.addEventListener('click', logout);
-
-  const sidebarLogout = document.getElementById('sidebarLogout');
-  if (sidebarLogout) sidebarLogout.addEventListener('click', (e) => {
-    e.preventDefault();
-    logout();
-  });
+  document.getElementById('logoutBtn')?.addEventListener('click', logout);
+  document.getElementById('sidebarLogout')?.addEventListener('click', e => { e.preventDefault(); logout(); });
 }
-
-/* ── Display user name in nav ─────────────────────────────── */
 
 function displayUserName() {
   const user = getUser();
-  const display = document.getElementById('userNameDisplay');
-  if (display && user) {
-    // Show first name only
-    const firstName = (user.name || user.email || '').split(' ')[0];
-    display.textContent = `Hi, ${firstName}`;
-  }
+  const el   = document.getElementById('userNameDisplay');
+  if (el && user) el.textContent = `Hi, ${(user.name || user.email || '').split(' ')[0]}`;
 }
 
-/* ── Mobile nav toggle ──────────────────────────────────── */
-
+// ── Mobile nav ───────────────────────────────────────────────
 function setupNavToggle() {
   const toggle = document.getElementById('navToggle');
-  const links = document.getElementById('navLinks');
-  if (toggle && links) {
-    toggle.addEventListener('click', () => links.classList.toggle('open'));
-  }
+  const links  = document.getElementById('navLinks');
+  if (toggle && links) toggle.addEventListener('click', () => links.classList.toggle('open'));
+
+  // Close nav when clicking a link on mobile
+  links?.querySelectorAll('a').forEach(a =>
+    a.addEventListener('click', () => links.classList.remove('open'))
+  );
 }
 
-/* ── Date formatting helpers ─────────────────────────────── */
+// ── Toasts ───────────────────────────────────────────────────
+function showToast(message, type = 'info', duration = 3500) {
+  const container = document.getElementById('toastContainer');
+  if (!container) return;
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
 
-/** Format a date string as "Jan 15, 2025" */
+  // Icon prefix per type
+  const icons = { success: '✅', error: '❌', info: 'ℹ️' };
+  toast.innerHTML = `<span style="margin-right:0.5rem">${icons[type] || ''}</span>${escapeHtml(message)}`;
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(110%)';
+    toast.style.transition = 'all 0.3s ease';
+    setTimeout(() => toast.remove(), 320);
+  }, duration);
+}
+
+// ── Loading button ────────────────────────────────────────────
+function setLoading(btn, text = '') {
+  const original = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = text ? `<span class="spinner"></span> ${text}` : '<span class="spinner"></span>';
+  return () => { btn.disabled = false; btn.innerHTML = original; };
+}
+
+// ── Formatting helpers ────────────────────────────────────────
 function formatDate(dateStr) {
   if (!dateStr) return '—';
-  const d = new Date(dateStr);
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
-/** Get days until a deadline (negative = overdue) */
 function daysUntil(dateStr) {
   if (!dateStr) return null;
-  const now = new Date();
-  now.setHours(0, 0, 0, 0);
-  const target = new Date(dateStr);
-  target.setHours(0, 0, 0, 0);
-  return Math.round((target - now) / (1000 * 60 * 60 * 24));
+  const now = new Date(); now.setHours(0,0,0,0);
+  const tgt = new Date(dateStr); tgt.setHours(0,0,0,0);
+  return Math.round((tgt - now) / 86_400_000);
 }
 
-/** Get initials from company name for avatar */
 function getInitials(name) {
   if (!name) return '?';
-  return name.split(' ').slice(0, 2).map(w => w[0]).join('').toUpperCase();
+  return name.trim().split(/\s+/).slice(0,2).map(w => w[0]).join('').toUpperCase();
 }
 
-/* ── Run shared setup on every page ─────────────────────── */
+function escapeHtml(str) {
+  if (str == null) return '';
+  return String(str).replace(/[&<>"']/g, c =>
+    ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#039;' }[c]));
+}
+
+// ── Confirm dialog (replaces native confirm()) ───────────────
+function confirmDialog(message) {
+  return new Promise(resolve => {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay open';
+    overlay.innerHTML = `
+      <div class="modal" style="max-width:360px;text-align:center">
+        <p style="margin-bottom:1.5rem;font-size:0.9rem;color:var(--text)">${escapeHtml(message)}</p>
+        <div style="display:flex;gap:0.75rem;justify-content:center">
+          <button class="btn btn-ghost" id="cfmNo">Cancel</button>
+          <button class="btn btn-danger" id="cfmYes">Confirm</button>
+        </div>
+      </div>`;
+    document.body.appendChild(overlay);
+    overlay.querySelector('#cfmYes').addEventListener('click', () => { overlay.remove(); resolve(true); });
+    overlay.querySelector('#cfmNo').addEventListener('click',  () => { overlay.remove(); resolve(false); });
+  });
+}
+
+// ── Back-to-top button ────────────────────────────────────────
+function setupBackToTop() {
+  const btn = document.getElementById('backToTop');
+  if (!btn) return;
+  window.addEventListener('scroll', () =>
+    btn.classList.toggle('visible', window.scrollY > 400)
+  , { passive: true });
+  btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+}
+
+// ── Page init ─────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   setupNavToggle();
   setupLogoutHandlers();
   displayUserName();
+  setupBackToTop();
+
+  // Animate page sections into view on scroll
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('fade-in');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.observe-fade').forEach(el => observer.observe(el));
 });
