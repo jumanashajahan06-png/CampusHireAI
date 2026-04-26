@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard – CampusHire AI</title>
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/dashboard.css" />
+</head>
+<body>
+  <!-- Top Nav -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand">🎓 Campus<span>Hire</span> AI</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="dashboard.html" class="active">Dashboard</a></li>
+      <li><a href="applications.html">Applications</a></li>
+      <li><a href="ai-assistant.html">AI Assistant</a></li>
+      <li>
+        <!-- User menu -->
+        <span id="userNameDisplay" style="color:var(--text-muted); font-size:0.875rem; padding: 0 0.5rem;"></span>
+        <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
+      </li>
+    </ul>
+    <button class="nav-toggle" id="navToggle"><span></span><span></span><span></span></button>
+  </nav>
+
+  <div class="page-content">
+    <div class="app-layout">
+      <!-- Sidebar -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-label">Main</div>
+        <a href="dashboard.html" class="active">
+          <span class="sidebar-icon">📊</span> Dashboard
+        </a>
+        <a href="applications.html">
+          <span class="sidebar-icon">📋</span> Applications
+        </a>
+
+        <div class="sidebar-label">Tools</div>
+        <a href="ai-assistant.html">
+          <span class="sidebar-icon">🤖</span> AI Assistant
+        </a>
+
+        <div class="sidebar-label" style="margin-top:auto">Account</div>
+        <a href="#" id="sidebarLogout">
+          <span class="sidebar-icon">👋</span> Log out
+        </a>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-area">
+        <!-- Header -->
+        <div class="dashboard-header fade-in">
+          <h2>Good morning, <span id="greeting-name">there</span> 👋</h2>
+          <p>Here's your placement tracker overview</p>
+        </div>
+
+        <!-- Quick action buttons -->
+        <div class="quick-actions fade-in">
+          <a href="applications.html" class="btn btn-primary">
+            ➕ Add Application
+          </a>
+          <a href="ai-assistant.html" class="btn btn-ghost">
+            🤖 Ask AI Assistant
+          </a>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid fade-in">
+          <div class="stat-card">
+            <div class="stat-icon blue">📋</div>
+            <div>
+              <div class="stat-value" id="stat-total">0</div>
+              <div class="stat-label">Total Applied</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon yellow">🎯</div>
+            <div>
+              <div class="stat-value" id="stat-interview">0</div>
+              <div class="stat-label">Interviews</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">✅</div>
+            <div>
+              <div class="stat-value" id="stat-offer">0</div>
+              <div class="stat-label">Offers</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon red">❌</div>
+            <div>
+              <div class="stat-value" id="stat-rejected">0</div>
+              <div class="stat-label">Rejected</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon purple">📈</div>
+            <div>
+              <div class="stat-value" id="stat-rate">0%</div>
+              <div class="stat-label">Success Rate</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid fade-in">
+          <!-- Recent Applications -->
+          <div class="card">
+            <div class="section-header">
+              <h3>Recent Applications</h3>
+              <a href="applications.html" class="btn btn-ghost btn-sm">View all</a>
+            </div>
+            <div id="recentAppsList">
+              <!-- Populated by dashboard.js -->
+              <div class="empty-state">
+                <div class="empty-icon">📭</div>
+                <h3>No applications yet</h3>
+                <p>Start tracking your job applications</p>
+                <a href="applications.html" class="btn btn-primary btn-sm" style="margin-top:1rem">
+                  Add your first application
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right column -->
+          <div style="display:flex; flex-direction:column; gap:1.5rem">
+            <!-- Upcoming deadlines -->
+            <div class="card">
+              <div class="section-header">
+                <h3>⏰ Upcoming Deadlines</h3>
+              </div>
+              <div id="deadlineList">
+                <div class="empty-state" style="padding:1.5rem 0">
+                  <p style="font-size:0.8rem">No upcoming deadlines</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Status breakdown -->
+            <div class="card">
+              <h3 style="margin-bottom:1rem">Application Status</h3>
+              <div class="status-breakdown" id="statusBreakdown">
+                <div class="status-bar-row">
+                  <span class="status-bar-label">Applied</span>
+                  <div class="status-bar-track">
+                    <div class="status-bar-fill" id="bar-applied" style="width:0%; background:var(--accent)"></div>
+                  </div>
+                  <span class="status-bar-count" id="count-applied">0</span>
+                </div>
+                <div class="status-bar-row">
+                  <span class="status-bar-label">Interview</span>
+                  <div class="status-bar-track">
+                    <div class="status-bar-fill" id="bar-interview" style="width:0%; background:var(--yellow)"></div>
+                  </div>
+                  <span class="status-bar-count" id="count-interview">0</span>
+                </div>
+                <div class="status-bar-row">
+                  <span class="status-bar-label">Offer</span>
+                  <div class="status-bar-track">
+                    <div class="status-bar-fill" id="bar-offer" style="width:0%; background:var(--green)"></div>
+                  </div>
+                  <span class="status-bar-count" id="count-offer">0</span>
+                </div>
+                <div class="status-bar-row">
+                  <span class="status-bar-label">Rejected</span>
+                  <div class="status-bar-track">
+                    <div class="status-bar-fill" id="bar-rejected" style="width:0%; background:var(--red)"></div>
+                  </div>
+                  <span class="status-bar-count" id="count-rejected">0</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Toast container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="../js/utils.js"></script>
+  <script src="../js/dashboard.js"></script>
+</body>
+</html>

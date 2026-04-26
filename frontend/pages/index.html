@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CampusHire AI – Placement & Internship Tracker</title>
+  <link rel="stylesheet" href="../css/main.css" />
+  <style>
+    /* Landing page specific styles */
+    .hero {
+      min-height: calc(100vh - 64px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Hero glow effects */
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(79,142,247,0.08) 0%, transparent 65%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      animation: fadeInUp 0.7s ease;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--accent-dim);
+      border: 1px solid var(--border-glow);
+      border-radius: 100px;
+      padding: 0.35rem 1rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1.25rem;
+      letter-spacing: -0.03em;
+    }
+
+    .hero h1 .highlight {
+      background: linear-gradient(135deg, var(--accent), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 520px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.7;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .hero-cta .btn { font-size: 1rem; padding: 0.85rem 2rem; }
+
+    /* Stats bar */
+    .stats-bar {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 4rem;
+      flex-wrap: wrap;
+    }
+
+    .stats-bar-item { text-align: center; }
+    .stats-bar-item .number {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .stats-bar-item .label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Features section */
+    .features {
+      padding: 5rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-title .eyebrow {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title h2 { margin-bottom: 0.75rem; }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .feature-card:hover {
+      border-color: var(--border-glow);
+      transform: translateY(-4px);
+    }
+
+    .feature-icon {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-card h3 { font-size: 1rem; margin-bottom: 0.5rem; }
+    .feature-card p  { font-size: 0.85rem; line-height: 1.6; }
+
+    /* How it works */
+    .how-it-works {
+      padding: 5rem 2rem;
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .step {
+      text-align: center;
+    }
+
+    .step-number {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: var(--accent-dim);
+      border: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--accent);
+      margin: 0 auto 1rem;
+    }
+
+    .step h3 { font-size: 0.95rem; margin-bottom: 0.5rem; }
+    .step p   { font-size: 0.82rem; }
+
+    /* CTA section */
+    .cta-section {
+      padding: 5rem 2rem;
+      text-align: center;
+    }
+
+    .cta-section h2 { margin-bottom: 1rem; }
+    .cta-section p  { margin-bottom: 2rem; }
+
+    /* Footer */
+    .footer {
+      padding: 2rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.82rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand">
+      🎓 Campus<span>Hire</span> AI
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#how-it-works">How it works</a></li>
+      <li><a href="login.html">Log in</a></li>
+      <li><a href="signup.html" class="btn-nav">Get started →</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <main class="page-content">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-content">
+        <div class="hero-badge">✨ AI-Powered Career Tools</div>
+        <h1>Track every application.<br><span class="highlight">Land your dream job.</span></h1>
+        <p>The smart placement tracker for college students. Manage applications, prep for interviews with AI, and never miss a deadline again.</p>
+        <div class="hero-cta">
+          <a href="signup.html" class="btn btn-primary">Start for free →</a>
+          <a href="dashboard.html" class="btn btn-ghost">View demo</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats bar -->
+    <div class="stats-bar">
+      <div class="stats-bar-item">
+        <div class="number">10k+</div>
+        <div class="label">Students using it</div>
+      </div>
+      <div class="stats-bar-item">
+        <div class="number">50k+</div>
+        <div class="label">Applications tracked</div>
+      </div>
+      <div class="stats-bar-item">
+        <div class="number">3x</div>
+        <div class="label">Higher offer rate</div>
+      </div>
+      <div class="stats-bar-item">
+        <div class="number">100%</div>
+        <div class="label">Free to start</div>
+      </div>
+    </div>
+
+    <!-- Features -->
+    <section class="features" id="features">
+      <div class="section-title">
+        <div class="eyebrow">Everything you need</div>
+        <h2>Built for the modern job hunt</h2>
+        <p>From first application to final offer — CampusHire AI keeps you organized and prepared.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon" style="background:var(--accent-dim); color:var(--accent)">📋</div>
+          <h3>Application Tracker</h3>
+          <p>Log every job and internship application with company, role, status, and notes. Stay on top of your pipeline.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:rgba(247,201,72,0.12); color:var(--yellow)">⏰</div>
+          <h3>Deadline Reminders</h3>
+          <p>Never miss an application deadline. Get smart reminders for upcoming interviews and follow-ups.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:rgba(167,139,250,0.12); color:var(--purple)">🤖</div>
+          <h3>AI Career Assistant</h3>
+          <p>Get personalized resume tips, practice interview questions, and career advice from your AI coach.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:rgba(45,206,137,0.12); color:var(--green)">📊</div>
+          <h3>Progress Dashboard</h3>
+          <p>Visual stats on your application pipeline. See your success rate and where to focus your energy.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:rgba(247,95,79,0.12); color:var(--red)">🔍</div>
+          <h3>Status Tracking</h3>
+          <p>Track every stage — Applied, Interview, Offer, Rejected. Know exactly where you stand at all times.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:var(--accent-dim); color:var(--accent)">📱</div>
+          <h3>Works Everywhere</h3>
+          <p>Fully responsive design that works perfectly on your phone, tablet, or laptop. Track on the go.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="how-it-works" id="how-it-works">
+      <div class="section-title">
+        <div class="eyebrow">Simple process</div>
+        <h2>Up and running in minutes</h2>
+      </div>
+      <div class="steps-grid">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Create your account</h3>
+          <p>Sign up for free in under 30 seconds. No credit card required.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Add your applications</h3>
+          <p>Log companies, roles, dates, and notes as you apply to positions.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Track & prepare</h3>
+          <p>Update statuses, set reminders, and use the AI assistant to prepare.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <h3>Land the offer 🎉</h3>
+          <p>Stay organized and confident throughout your entire job search.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+      <h2>Ready to organize your job search?</h2>
+      <p>Join thousands of students landing placements with CampusHire AI.</p>
+      <a href="signup.html" class="btn btn-primary" style="font-size:1rem; padding: 0.9rem 2.5rem">
+        Get started for free →
+      </a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>© 2025 CampusHire AI. Built with ❤️ for students everywhere.</p>
+    </footer>
+  </main>
+
+  <script>
+    // Mobile nav toggle
+    document.getElementById('navToggle').addEventListener('click', () => {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+  </script>
+</body>
+</html>

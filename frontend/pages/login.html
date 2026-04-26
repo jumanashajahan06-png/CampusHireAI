@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Log in – CampusHire AI</title>
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/auth.css" />
+</head>
+<body>
+  <!-- Minimal nav for auth pages -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand">🎓 Campus<span>Hire</span> AI</a>
+    <ul class="nav-links">
+      <li><a href="signup.html" class="btn-nav">Sign up free</a></li>
+    </ul>
+  </nav>
+
+  <main class="page-content">
+    <div class="auth-wrapper">
+      <div class="auth-box">
+        <!-- Logo / heading -->
+        <div class="auth-logo">
+          <div class="logo-mark">🎓</div>
+          <h1>Welcome back</h1>
+          <p>Log in to your CampusHire AI account</p>
+        </div>
+
+        <!-- Error message (shown on bad credentials) -->
+        <div class="auth-error" id="authError">
+          Invalid email or password. Please try again.
+        </div>
+
+        <!-- Login form -->
+        <form class="auth-form" id="loginForm" novalidate>
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="you@university.edu"
+              required
+              autocomplete="email"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <div class="input-wrapper">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+                required
+                autocomplete="current-password"
+              />
+              <!-- Toggle password visibility -->
+              <button type="button" class="toggle-pw" id="togglePw" aria-label="Show password">
+                👁️
+              </button>
+            </div>
+          </div>
+
+          <!-- Submit button -->
+          <button type="submit" class="btn btn-primary" id="loginBtn">
+            Log in
+          </button>
+        </form>
+
+        <div class="auth-divider">or</div>
+
+        <div class="auth-footer">
+          Don't have an account? <a href="signup.html">Sign up free →</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../js/utils.js"></script>
+  <script src="../js/auth.js"></script>
+</body>
+</html>

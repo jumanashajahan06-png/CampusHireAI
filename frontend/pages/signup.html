@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign up – CampusHire AI</title>
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/auth.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand">🎓 Campus<span>Hire</span> AI</a>
+    <ul class="nav-links">
+      <li><a href="login.html">Log in</a></li>
+    </ul>
+  </nav>
+
+  <main class="page-content">
+    <div class="auth-wrapper">
+      <div class="auth-box">
+        <div class="auth-logo">
+          <div class="logo-mark">🚀</div>
+          <h1>Create your account</h1>
+          <p>Start tracking your applications for free</p>
+        </div>
+
+        <div class="auth-error" id="authError"></div>
+
+        <form class="auth-form" id="signupForm" novalidate>
+          <div class="form-group">
+            <label for="name">Full name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Alex Johnson"
+              required
+              autocomplete="name"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="you@university.edu"
+              required
+              autocomplete="email"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="university">University / College</label>
+            <input
+              type="text"
+              id="university"
+              name="university"
+              placeholder="MIT, Stanford, IIT Delhi..."
+              autocomplete="organization"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <div class="input-wrapper">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="At least 8 characters"
+                required
+                autocomplete="new-password"
+              />
+              <button type="button" class="toggle-pw" id="togglePw" aria-label="Show password">
+                👁️
+              </button>
+            </div>
+            <!-- Password strength indicator -->
+            <div class="pw-strength" id="pwStrength">
+              <div class="pw-strength-bar" id="bar1"></div>
+              <div class="pw-strength-bar" id="bar2"></div>
+              <div class="pw-strength-bar" id="bar3"></div>
+              <div class="pw-strength-bar" id="bar4"></div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="signupBtn">
+            Create account
+          </button>
+        </form>
+
+        <div class="auth-footer">
+          Already have an account? <a href="login.html">Log in →</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../js/utils.js"></script>
+  <script src="../js/auth.js"></script>
+</body>
+</html>

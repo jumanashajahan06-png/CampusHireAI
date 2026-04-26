@@ -1,0 +1,197 @@
+/* ============================================================
+   dashboard.css — Dashboard page styles
+   ============================================================ */
+
+.dashboard-header {
+  margin-bottom: 2rem;
+}
+
+.dashboard-header h2 {
+  font-size: 1.6rem;
+  margin-bottom: 0.3rem;
+}
+
+.dashboard-header p { font-size: 0.9rem; }
+
+/* --- Stat Cards Grid --- */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: border-color 0.2s, transform 0.2s;
+  cursor: default;
+}
+.stat-card:hover { border-color: var(--border-glow); transform: translateY(-2px); }
+
+.stat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.stat-icon.blue   { background: var(--accent-dim);            color: var(--accent); }
+.stat-icon.green  { background: rgba(45,206,137,0.12);        color: var(--green); }
+.stat-icon.yellow { background: rgba(247,201,72,0.12);        color: var(--yellow); }
+.stat-icon.red    { background: rgba(247,95,79,0.12);         color: var(--red); }
+.stat-icon.purple { background: rgba(167,139,250,0.12);       color: var(--purple); }
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* --- Dashboard grid layout --- */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 1.5rem;
+}
+
+/* --- Recent Applications list --- */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.section-header h3 { font-size: 1rem; }
+
+.app-list-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius);
+  transition: background 0.15s;
+  border-bottom: 1px solid var(--border);
+}
+.app-list-item:last-child { border-bottom: none; }
+.app-list-item:hover { background: var(--bg-hover); }
+
+.app-company-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--bg-hover);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--accent);
+  font-family: var(--font-display);
+  flex-shrink: 0;
+}
+
+.app-info { flex: 1; min-width: 0; }
+.app-info .company { font-weight: 600; font-size: 0.9rem; color: var(--text); }
+.app-info .role { font-size: 0.8rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.app-meta { text-align: right; flex-shrink: 0; }
+.app-meta .date { font-size: 0.75rem; color: var(--text-dim); margin-top: 0.3rem; }
+
+/* --- Deadline widget --- */
+.deadline-list { display: flex; flex-direction: column; gap: 0.75rem; }
+
+.deadline-item {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.deadline-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 0.35rem;
+  flex-shrink: 0;
+}
+.deadline-dot.urgent  { background: var(--red); box-shadow: 0 0 6px var(--red); }
+.deadline-dot.soon    { background: var(--yellow); }
+.deadline-dot.normal  { background: var(--accent); }
+
+.deadline-item .dl-company { font-size: 0.875rem; font-weight: 600; color: var(--text); }
+.deadline-item .dl-role    { font-size: 0.78rem;  color: var(--text-muted); }
+.deadline-item .dl-date    { font-size: 0.75rem;  color: var(--text-dim); margin-top: 0.2rem; }
+
+/* --- Status breakdown donut-like chart --- */
+.status-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.status-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.8rem;
+}
+
+.status-bar-label {
+  width: 70px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.status-bar-track {
+  flex: 1;
+  height: 6px;
+  background: var(--bg-hover);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.status-bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.8s ease;
+}
+
+.status-bar-count {
+  width: 24px;
+  text-align: right;
+  color: var(--text-muted);
+}
+
+/* --- Quick actions --- */
+.quick-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 900px) {
+  .dashboard-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}

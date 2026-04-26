@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Assistant – CampusHire AI</title>
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/ai.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand">🎓 Campus<span>Hire</span> AI</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="applications.html">Applications</a></li>
+      <li><a href="ai-assistant.html" class="active">AI Assistant</a></li>
+      <li>
+        <span id="userNameDisplay" style="color:var(--text-muted); font-size:0.875rem; padding: 0 0.5rem;"></span>
+        <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
+      </li>
+    </ul>
+    <button class="nav-toggle" id="navToggle"><span></span><span></span><span></span></button>
+  </nav>
+
+  <div class="page-content">
+    <div class="ai-layout">
+      <!-- Conversation history sidebar -->
+      <aside class="conv-sidebar">
+        <div class="conv-sidebar-header">
+          <h3>Conversations</h3>
+          <button class="btn btn-primary btn-sm" id="newChatBtn">+ New</button>
+        </div>
+        <div class="conv-list" id="convList">
+          <!-- Populated by ai.js -->
+          <div style="padding: 1rem; text-align:center; color:var(--text-dim); font-size:0.8rem">
+            No conversations yet
+          </div>
+        </div>
+      </aside>
+
+      <!-- Chat area -->
+      <div class="chat-area">
+        <!-- Chat header -->
+        <div class="chat-header">
+          <div class="ai-avatar">🤖</div>
+          <div class="chat-header-info">
+            <h3>Career AI Assistant</h3>
+            <div class="ai-status">Online</div>
+          </div>
+        </div>
+
+        <!-- Messages / Welcome screen -->
+        <div class="messages-area" id="messagesArea">
+          <!-- Welcome screen (shown when no messages) -->
+          <div class="chat-welcome" id="chatWelcome">
+            <div class="welcome-ai-logo">🤖</div>
+            <h2>Your AI Career Coach</h2>
+            <p>Get personalized resume tips, interview prep, and career advice. Ask me anything about your job search!</p>
+
+            <div class="welcome-chips">
+              <div class="welcome-chip" data-prompt="Review my resume and give me 5 specific improvement tips">
+                <div class="chip-icon">📄</div>
+                <div class="chip-text">Resume tips & improvements</div>
+              </div>
+              <div class="welcome-chip" data-prompt="Give me 10 common software engineering interview questions with answers">
+                <div class="chip-icon">💬</div>
+                <div class="chip-text">Interview Q&A practice</div>
+              </div>
+              <div class="welcome-chip" data-prompt="How do I write a compelling cover letter for a tech internship?">
+                <div class="chip-icon">✉️</div>
+                <div class="chip-text">Cover letter help</div>
+              </div>
+              <div class="welcome-chip" data-prompt="What are the best strategies to negotiate a job offer salary?">
+                <div class="chip-icon">💰</div>
+                <div class="chip-text">Salary negotiation tips</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick prompt chips (shown during conversation) -->
+        <div class="prompt-chips" id="promptChips" style="display:none">
+          <button class="prompt-chip" data-prompt="Give me 5 behavioral interview questions">Behavioral Qs</button>
+          <button class="prompt-chip" data-prompt="What skills should I add to my resume?">Resume skills</button>
+          <button class="prompt-chip" data-prompt="How do I follow up after an interview?">Follow-up email</button>
+          <button class="prompt-chip" data-prompt="What questions should I ask the interviewer?">Questions to ask</button>
+        </div>
+
+        <!-- Input area -->
+        <div class="chat-input-area">
+          <div class="chat-input-wrap">
+            <textarea
+              class="chat-input"
+              id="chatInput"
+              placeholder="Ask anything about your career, resume, or interviews..."
+              rows="1"
+            ></textarea>
+            <button class="chat-send-btn" id="sendBtn" disabled aria-label="Send message">
+              ➤
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="../js/utils.js"></script>
+  <script src="../js/ai.js"></script>
+</body>
+</html>
